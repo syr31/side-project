@@ -55,7 +55,6 @@ public class PostService {
        Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
-
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
         PostEditor postEditor = editorBuilder.title(postEdit.getTitle())

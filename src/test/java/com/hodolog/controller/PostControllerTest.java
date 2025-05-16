@@ -39,27 +39,8 @@ class PostControllerTest {
         postRepository.deleteAll();
     }
 
-  @Test
-  @DisplayName("/posts 요청시 hello 출력")
-  void test() throws Exception {
-      PostCreate request = PostCreate.builder()
-              .title("제목입니다.")
-              .content("내용입니다.")
-              .build();
-
-      String json = objectMapper.writeValueAsString(request);
-
-      mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                      .contentType(MediaType.APPLICATION_JSON)
-                      .content(json)
-              )
-              .andExpect(MockMvcResultMatchers.status().isOk())
-              .andExpect(MockMvcResultMatchers.content().string(""))
-              .andDo(MockMvcResultHandlers.print());
-  }
-
     @Test
-    @DisplayName("/posts 요청시 title 값은 필수")
+    @DisplayName("글 작성 요청시 title 값은 필수")
     void test2() throws Exception {
         PostCreate request = PostCreate.builder()
                 .content("내용입니다.")
@@ -79,7 +60,7 @@ class PostControllerTest {
     }
 
     @Test
-    @DisplayName("/posts 요청시 DB에 값이 저장")
+    @DisplayName("글 작성 요청시 DB에 값이 저장")
     void test3() throws Exception {
         PostCreate request = PostCreate.builder()
                 .title("제목입니다.")
@@ -89,6 +70,7 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
+                        .header("authorization", "test")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json)
                 )

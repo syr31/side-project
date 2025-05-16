@@ -1,0 +1,5 @@
+### 테스트 요청
+
+GET http://localhost:8080/foo
+Content-Type : application/json
+Authorization : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2UifQ.5cCnyOQA73KLG25AxyuF5k5BryWlm_Z8F5X7vAZz2QY
