@@ -1,10 +1,13 @@
 package com.hodolog.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hodolog.config.MockUser;
 import com.hodolog.domain.Post;
-import com.hodolog.repository.PostRepository;
+import com.hodolog.repository.post.PostRepository;
 
-import com.hodolog.request.PostCreate;
+import com.hodolog.repository.UserRepository;
+import com.hodolog.request.post.PostCreate;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,6 +47,15 @@ public class PostControllerDocTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @AfterEach
+    void clean(){
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("글 단건 조회 테스트")
         void test1() throws Exception {
@@ -52,9 +64,9 @@ public class PostControllerDocTest {
                 .content("내용")
                 .build();
 
-        postRepository.save(post);
+        Post savedPost = postRepository.save(post);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{postId}", 1L)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get("/posts/{postId}", savedPost.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(document("post-inquiry",
@@ -68,6 +80,7 @@ public class PostControllerDocTest {
         }
 
     @Test
+    @MockUser
     @DisplayName("글 등록")
     void test2() throws Exception {
         PostCreate request = PostCreate.builder()

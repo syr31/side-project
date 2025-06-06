@@ -1,11 +1,14 @@
 package com.hodolog.service;
 
+import com.hodolog.config.SecurityConfig;
 import com.hodolog.domain.Post;
+import com.hodolog.domain.User;
 import com.hodolog.exception.PostNotFound;
-import com.hodolog.repository.PostRepository;
-import com.hodolog.request.PostCreate;
-import com.hodolog.request.PostEdit;
-import com.hodolog.request.PostSearch;
+import com.hodolog.repository.post.PostRepository;
+import com.hodolog.repository.UserRepository;
+import com.hodolog.request.post.PostCreate;
+import com.hodolog.request.post.PostEdit;
+import com.hodolog.request.post.PostSearch;
 import com.hodolog.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,13 +16,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.hodolog.domain.QPost.post;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
+@ActiveProfiles("test")
+@Import(SecurityConfig.class)
 class PostServiceTest {
     @Autowired
     private PostService postService;
@@ -27,20 +36,31 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     void clean(){
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("글 작성")
     void test1(){
+        User user = User.builder()
+                .name("test")
+                .email("test@gmail.com")
+                .password("1234").build();
+
+        userRepository.save(user);
+
         PostCreate postCreate = PostCreate.builder()
                 .title("제목입니다.")
                 .content("내용입니다.")
                 .build();
 
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         Assertions.assertEquals(1l, postRepository.count());
         Post post = postRepository.findAll().get(0);

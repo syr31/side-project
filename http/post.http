@@ -1,5 +1,8 @@
-### 테스트 요청
+### 게시글 작성
 
-GET http://localhost:8080/foo
+GET http://localhost:8081/posts
 Content-Type : application/json
-Authorization : eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb2UifQ.5cCnyOQA73KLG25AxyuF5k5BryWlm_Z8F5X7vAZz2QY
+
+### 게시글 삭제
+DELETE http://localhost:8081/posts/1
+Content-Type : application/json

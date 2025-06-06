@@ -1,7 +1,6 @@
-package com.hodolog.request;
+package com.hodolog.request.post;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

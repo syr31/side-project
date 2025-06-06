@@ -38,6 +38,12 @@ secrets.yml
 .gradletasknamecache
 .sts4-cache
 .git-hooks/
+.bashrc
+.bash_history
+.profile
+.idea/
+http/
+vite-project/
 #node_modules
 
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
